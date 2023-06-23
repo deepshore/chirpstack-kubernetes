@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mosquitto
+spec:
+  selector:
+    matchLabels:
+      app: mosquitto 
+  serviceName: "mosquitto"
+  replicas: 1 
+  template:
+    metadata:
+      labels:
+        app: mosquitto
+    spec:
+      containers:
+      - name: mosquitto
+        image: eclipse-mosquitto:2
+        ports:
+        - containerPort: 1883
+          name: mosquitto
+        volumeMounts:
+        - name: configuration
+          mountPath: /mosquitto/config
+      volumes: 
+      - name: configuration
+        configMap:
+          name: mosquitto-configuration

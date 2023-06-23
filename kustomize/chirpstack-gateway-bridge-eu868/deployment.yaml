@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: chirpstack-gateway-bridge-eu868
+  name: chirpstack-gateway-bridge-eu868
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chirpstack-gateway-bridge-eu868
+  template:
+    metadata:
+      labels:
+        app: chirpstack-gateway-bridge-eu868
+    spec:
+      containers:
+      - image: chirpstack/chirpstack-gateway-bridge:4
+        name: chirpstack-gateway-bridge-eu868
+        ports:
+        - containerPort: 1700
+        volumeMounts:
+        - name: configuration 
+          mountPath: /etc/chirpstack-gateway-bridge
+      volumes:
+      - name: configuration 
+        configMap:
+          name: chirpstack-gateway-bridge-eu868-configuration

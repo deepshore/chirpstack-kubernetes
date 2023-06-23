@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: chirpstack
+spec:
+  selector:
+    matchLabels:
+      app: chirpstack 
+  serviceName: "chirpstack"
+  replicas: 1 
+  template:
+    metadata:
+      labels:
+        app: chirpstack
+    spec:
+      containers:
+      - name: chirpstack
+        image: chirpstack/chirpstack:4
+        args:
+        - "-c"
+        - "/etc/chirpstack"
+        env:
+        - name: MQTT_BROKER_HOST
+          value: mosquitto
+        - name: REDIS_HOST
+          value: redis
+        - name: POSTGRESQL_HOST
+          value: postgres
+        ports:
+        - containerPort: 8080
+          name: web
+        volumeMounts:
+        - name: configuration
+          mountPath: /etc/chirpstack
+      volumes: 
+      - name: configuration
+        configMap:
+          name: chirpstack-configuration

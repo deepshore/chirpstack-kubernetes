@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: chirpstack-gateway-bridge-eu868
+  name: chirpstack-gateway-bridge-eu868
+spec:
+  ports:
+  - name: udp
+    port: 1700
+    protocol: UDP
+    targetPort: 1700
+  selector:
+    app: chirpstack-gateway-bridge-eu868
+  type: ClusterIP
